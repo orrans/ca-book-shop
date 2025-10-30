@@ -28,3 +28,10 @@ function onRemoveBook(bookId, ev) {
     removeBook(bookId)
     renderBooks()
 }
+
+function onUpdateBook(bookId, ev) {
+    ev.stopPropagation()
+    const newPrice = +prompt('Enter new price')
+    updatePrice(bookId, newPrice)
+    renderBooks()
+}
