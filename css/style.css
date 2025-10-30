@@ -1,0 +1,35 @@
+button {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-read {
+    background-color: #42a5f5;
+}
+
+.btn-update {
+    background-color: #fbc02d;
+    color: #333;
+}
+
+.btn-delete {
+    background-color: #f4511e;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px, solid, black;
+}
+
+td {
+    border: 1px, solid, black;
+}
+
+th {
+    border: 1px, solid, black;
+}
