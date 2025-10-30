@@ -4,9 +4,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Book Shop</title>
-        <link rel="stylesheet" href="./css/style.css">
+        <link rel="stylesheet" href="./css/style.css" />
     </head>
-    <body>
+    <body onload="onInit()">
         <table>
             <thead>
                 <tr>
@@ -14,37 +14,11 @@
                     <th>Price</th>
                     <th>Action</th>
                 </tr>
-                <tr>
-                    <td>book name</td>
-                    <td>120</td>
-                    <td>
-                        <button class="btn-read">read</button>
-                        <button class="btn-update">update</button>
-                        <button class="btn-delete">delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>book name</td>
-                    <td>120</td>
-                    <td>
-                        <button class="btn-read">read</button>
-                        <button class="btn-update">update</button>
-                        <button class="btn-delete">delete</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>book name</td>
-                    <td>120</td>
-                    <td>
-                        <button class="btn-read">read</button>
-                        <button class="btn-update">update</button>
-                        <button class="btn-delete">delete</button>
-                    </td>
-                </tr>
             </thead>
+            <tbody class="book-list"></tbody>
         </table>
 
-        <script src="./js/book-service.js"></script>
+        <script src="./js/services/book-service.js"></script>
         <script src="./js/book-controller.js"></script>
     </body>
 </html>
