@@ -29,7 +29,8 @@ function removeBook(bookId) {
 }
 
 function updatePrice(bookId, price) {
-    gBooks.find((book) => book.id === bookId).price = price
+    const book = gBooks.find((book) => book.id === bookId)
+    book.price = price
 }
 
 function getRandomInt(min, max) {
