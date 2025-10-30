@@ -22,3 +22,8 @@ let gBooks = [
 function getBooks() {
     return gBooks
 }
+
+function removeBook(bookId) {
+    const bookIdx = gBooks.findIndex((book) => book.id === bookId)
+    gBooks.splice(gBooks[bookIdx], 1)
+}
