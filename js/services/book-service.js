@@ -3,19 +3,19 @@ let gBooks = [
         id: 'b101',
         title: 'The Adventures of Lori Ipsi',
         price: 120,
-        imgUrl: 'lori-ipsi.jpg',
+        imgUrl: 'https://picsum.photos/200/300/?1',
     },
     {
         id: 'b102',
         title: 'The Hidden Kingdom',
         price: 90,
-        imgUrl: 'hidden-kingdom.jpg',
+        imgUrl: 'https://picsum.photos/200/300/?2',
     },
     {
         id: 'b103',
         title: 'Coding for Wizards',
         price: 200,
-        imgUrl: 'coding-wizards.jpg',
+        imgUrl: 'https://picsum.photos/200/300/?3',
     },
 ]
 
@@ -46,10 +46,15 @@ function addBook(title, price) {
 }
 
 function _createBook(title, price) {
+    const randImgId = getRandomInt(1, 9999)
     return {
         id: `b${getRandomInt(100, 1000)}`,
         title,
         price,
-        imgUrl: 'lori-ipsi.jpg',
+        imgUrl: `https://picsum.photos/200/300/?${randImgId}`,
     }
+}
+
+function _getBookById(bookId) {
+    return gBooks.find((book) => book.id === bookId)
 }
