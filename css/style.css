@@ -21,6 +21,10 @@ button {
     background-color: #f4511e;
 }
 
+.btn-add {
+    background-color: #41c1f4;
+}
+
 table {
     border-collapse: collapse;
     border: 1px, solid, black;
