@@ -1,3 +1,7 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
 button {
     border: none;
     border-radius: 6px;
@@ -6,6 +10,7 @@ button {
     font-weight: bold;
     cursor: pointer;
     transition: opacity 0.2s;
+    background-color: #42a5f5;
 }
 
 .btn-read {
@@ -36,4 +41,41 @@ td {
 
 th {
     border: 1px, solid, black;
+}
+
+/* modal bg */
+.modal {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal.show {
+    display: flex;
+}
+
+/* modal content */
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    width: 60vw;
+}
+
+.modal-content .close {
+    background-color: blue;
+    display: inline-block;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
 }

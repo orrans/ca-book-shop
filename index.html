@@ -20,6 +20,13 @@
 
         <button class="btn-add" onclick="onAddbook(event)">Add book</button>
 
+        <div class="modal" onclick="onCloseModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="modal-inner-content"></div>
+                <span class="close" onclick="onCloseModal()">&times;</span>
+            </div>
+        </div>
+
         <script src="./js/services/book-service.js"></script>
         <script src="./js/book-controller.js"></script>
     </body>
