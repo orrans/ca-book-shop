@@ -51,8 +51,10 @@ function onAddbook() {
     const elModalContent = document.querySelector('.modal-inner-content')
 
     let title = prompt('Enter the book title')
+    if (title === null) return
     while (!title || !title.trim()) {
-        title = prompt('Enter the book title')
+        title = prompt('Title cannot be empty!\nEnter the book title')
+        if (title === null) return
     }
 
     const bookExists = isBookExists(title)
@@ -62,8 +64,10 @@ function onAddbook() {
         elModalContent.innerText = `Book "${title}" already exists!`
     } else {
         price = +prompt('Enter the book price')
+        if (price === null) return
         while (isNaN(price) || price <= 0) {
-            price = +prompt('Enter the book price')
+            price = +prompt('Please enter valid book price!\nEnter the book price')
+            if (price === null) return
         }
 
         addBook(title, price)
