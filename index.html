@@ -7,6 +7,15 @@
         <link rel="stylesheet" href="./css/style.css" />
     </head>
     <body onload="onInit()">
+        <div class="search">
+            Search:
+            <input
+                type="text"
+                name="search-bar"
+                placeholder="Search book..."
+                oninput="onSearchBook(this.value)" />
+            <button class="clear-search" onclick="clearSearch()">Clear</button>
+        </div>
         <table>
             <thead>
                 <tr>

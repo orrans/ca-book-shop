@@ -71,3 +71,35 @@ function onUpdateRating(bookId, amount) {
     const elBookRating = document.querySelector('.book-rating')
     elBookRating.innerText = bookRating
 }
+
+function onSearchBook(searchTxt) {
+    if (!searchTxt) {
+        renderBooks()
+        return
+    }
+
+    searchTxt = searchTxt.toLowerCase()
+
+    const filteredBooks = getBooks().filter((book) => book.title.toLowerCase().includes(searchTxt))
+
+    const strHTMLs = filteredBooks.map(
+        (book) => `
+        <tr>
+            <td>${book.title}</td>
+            <td>${book.price}</td>
+            <td>
+                <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
+                <button class="btn-update" onclick="onUpdateBook('${book.id}')">update</button>
+                <button class="btn-delete" onclick="onRemoveBook('${book.id}')">delete</button>
+            </td>
+        </tr>
+    `
+    )
+    document.querySelector('.book-list').innerHTML = strHTMLs.join('')
+}
+
+function clearSearch() {
+    const elSearchBar = document.querySelector('[name="search-bar"]')
+    elSearchBar.value = ''
+    renderBooks()
+}
