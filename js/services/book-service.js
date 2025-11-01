@@ -1,26 +1,7 @@
-let gBooks = [
-    {
-        id: 'b101',
-        title: 'The Adventures of Lori Ipsi',
-        price: 120,
-        rating: 2,
-        imgUrl: 'https://picsum.photos/200/300/?1',
-    },
-    {
-        id: 'b102',
-        title: 'The Hidden Kingdom',
-        price: 90,
-        rating: 2,
-        imgUrl: 'https://picsum.photos/200/300/?2',
-    },
-    {
-        id: 'b103',
-        title: 'Coding for Wizards',
-        price: 200,
-        rating: 2,
-        imgUrl: 'https://picsum.photos/200/300/?3',
-    },
-]
+let gBooks
+const storageKey = 'booksDB'
+
+_createBooks()
 
 function getBooks() {
     return gBooks
@@ -38,6 +19,7 @@ function removeBook(bookId) {
 function updatePrice(bookId, price) {
     const book = gBooks.find((book) => book.id === bookId)
     book.price = price
+    _saveToLocalStorage()
 }
 
 function getRandomInt(min, max) {
@@ -49,7 +31,8 @@ function getRandomInt(min, max) {
 function addBook(title, price) {
     const book = _createBook(title, price)
     gBooks.push(book)
-    console.log(book)
+
+    _saveToLocalStorage()
 }
 
 function updateRating(bookId, amount) {
@@ -58,6 +41,8 @@ function updateRating(bookId, amount) {
     const bookRating = gBooks[bookIdx].rating
     if (bookRating < 0) gBooks[bookIdx].rating = 0
     else if (bookRating > 5) gBooks[bookIdx].rating = 5
+    _saveToLocalStorage()
+
     return gBooks[bookIdx].rating
 }
 
@@ -72,6 +57,22 @@ function _createBook(title, price) {
     }
 }
 
+function _createBooks() {
+    gBooks = loadFromStorage(storageKey)
+
+    if (!gBooks || !gBooks.length) {
+        gBooks = [
+            _createBook('The Adventures of Lori Ipsi', 90),
+            _createBook('The Hidden Kingdom', 120),
+            _createBook('Coding for Wizards', 190),
+        ]
+    }
+}
+
 function _getBookById(bookId) {
     return gBooks.find((book) => book.id === bookId)
+}
+
+function _saveToLocalStorage() {
+    saveToStorage(storageKey, gBooks)
 }
