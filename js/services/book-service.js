@@ -13,7 +13,7 @@ function getBook(bookId) {
 
 function removeBook(bookId) {
     const bookIdx = gBooks.findIndex((book) => book.id === bookId)
-    gBooks.splice(gBooks[bookIdx], 1)
+    gBooks.splice(bookIdx, 1)
     _saveToLocalStorage()
 }
 

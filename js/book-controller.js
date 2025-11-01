@@ -59,13 +59,15 @@ function renderBooks() {
                 <h4>$${book.price}</h4>
                 <h4 class="book-rating">${star.repeat(book.rating)}</h4>
                 <div class="card-actions">
-                <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
-                        <button class="btn-update" onclick="onUpdateBook('${
-                            book.id
-                        }')">update</button>
-                        <button class="btn-delete" onclick="onRemoveBook('${
-                            book.id
-                        }')">delete</button>
+                <button class="btn-read" onclick="event.stopPropagation(); onReadBook('${
+                    book.id
+                }')">read</button>
+                <button class="btn-update" onclick="event.stopPropagation(); onUpdateBook('${
+                    book.id
+                }')">update</button>
+                <button class="btn-delete" onclick="event.stopPropagation(); onRemoveBook('${
+                    book.id
+                }')">delete</button>
                 </div>
                 </div>`
         )
