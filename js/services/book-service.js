@@ -29,6 +29,7 @@ function getRandomInt(min, max) {
 }
 
 function addBook(title, price) {
+    if(isBookExists(title)) return
     const book = _createBook(title, price)
     gBooks.push(book)
 
@@ -44,6 +45,10 @@ function updateRating(bookId, amount) {
     _saveToLocalStorage()
 
     return gBooks[bookIdx].rating
+}
+
+function isBookExists(title) {
+    return gBooks.find((book) => book.title.toLowerCase() === title.toLowerCase())
 }
 
 function _createBook(title, price) {
@@ -76,3 +81,4 @@ function _getBookById(bookId) {
 function _saveToLocalStorage() {
     saveToStorage(storageKey, gBooks)
 }
+

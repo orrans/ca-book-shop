@@ -54,18 +54,25 @@ function onAddbook() {
     while (!title || !title.trim()) {
         title = prompt('Enter the book title')
     }
-    let price = +prompt('Enter the book price')
-    while (isNaN(price) || price <= 0) {
+
+    const bookExists = isBookExists(title)
+    let price
+
+    if (bookExists) {
+        elModalContent.innerText = `Book "${title}" already exists!`
+    } else {
         price = +prompt('Enter the book price')
+        while (isNaN(price) || price <= 0) {
+            price = +prompt('Enter the book price')
+        }
+
+        addBook(title, price)
+        renderBooks()
+        elModalContent.innerText = `Book "${title}" added successfully!`
     }
 
-    addBook(title, price)
-    renderBooks()
     elModal.classList.add('show')
-    elModalContent.innerText = `Book "${title}" added successfully!`
-    setTimeout(() => {
-        elModal.classList.remove('show')
-    }, 2000)
+    setTimeout(() => elModal.classList.remove('show'), 2000)
 }
 
 function onReadBook(bookId) {
