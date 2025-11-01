@@ -6,6 +6,17 @@ function onInit() {
 
 function renderBooks() {
     let books = getBooks()
+    const elTableBody = document.querySelector('.book-list')
+
+    if (!books.length) {
+        elTableBody.innerHTML = `
+        <tr class="no-books-msg">
+            <td colspan="3">No matching books were found...</td>
+        </tr>
+    `
+        calculateInventory()
+        return
+    }
 
     var strHTMLs = books.map(
         (book) =>
@@ -21,6 +32,7 @@ function renderBooks() {
     )
 
     document.querySelector('.book-list').innerHTML = strHTMLs.join('')
+    calculateInventory()
 }
 
 function onRemoveBook(bookId) {

@@ -14,6 +14,7 @@ function getBook(bookId) {
 function removeBook(bookId) {
     const bookIdx = gBooks.findIndex((book) => book.id === bookId)
     gBooks.splice(gBooks[bookIdx], 1)
+    _saveToLocalStorage()
 }
 
 function updatePrice(bookId, price) {
@@ -29,7 +30,7 @@ function getRandomInt(min, max) {
 }
 
 function addBook(title, price) {
-    if(isBookExists(title)) return
+    if (isBookExists(title)) return
     const book = _createBook(title, price)
     gBooks.push(book)
 
@@ -49,6 +50,22 @@ function updateRating(bookId, amount) {
 
 function isBookExists(title) {
     return gBooks.find((book) => book.title.toLowerCase() === title.toLowerCase())
+}
+
+function calculateInventory() {
+    const elCheapBooks = document.querySelector('.cheap-book-count')
+    const elAverageBooks = document.querySelector('.average-book-count')
+    const elExpensiveBooks = document.querySelector('.expensive-book-count')
+
+    const books = getBooks()
+
+    const cheapBooks = books.filter((book) => book.price < 80).length
+    const averageBooks = books.filter((book) => book.price >= 80 && book.price <= 200).length
+    const expensiveBooks = books.filter((book) => book.price > 200).length
+
+    elCheapBooks.innerText = cheapBooks
+    elAverageBooks.innerText = averageBooks
+    elExpensiveBooks.innerText = expensiveBooks
 }
 
 function _createBook(title, price) {
@@ -81,4 +98,3 @@ function _getBookById(bookId) {
 function _saveToLocalStorage() {
     saveToStorage(storageKey, gBooks)
 }
-
