@@ -44,7 +44,8 @@ button:hover {
 }
 
 .btn-add {
-    background-color: #41c1f4;
+    margin-top: 10px;
+    background-color: #42a5f5;
 }
 
 .view-state-btn {
@@ -97,15 +98,15 @@ tr:nth-child(even) {
     display: grid;
     width: 90%;
     margin: 20px auto;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
 }
 
 .card {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 16px;
+    padding: 14px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     cursor: pointer;
@@ -118,21 +119,21 @@ tr:nth-child(even) {
 
 .card img {
     width: 100%;
-    max-width: 200px;
-    height: auto;
+    height: 180px;
+    object-fit: cover;
     border-radius: 8px;
     margin-bottom: 12px;
     border: 1px solid #eee;
 }
 
 .card h3 {
-    font-size: 20px;
+    font-size: 18px;
     color: #2c3e50;
     width: 100%;
 }
 
 .card h4 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
     color: #388e3c;
     margin: 0;
@@ -183,7 +184,7 @@ tr:nth-child(even) {
 /* footer */
 footer.inventory-stats {
     margin-top: auto;
-    width: 100vw;
+    width: 100%;
     font-weight: bold;
     padding-bottom: 20px;
     background-color: #fff;
