@@ -100,7 +100,7 @@ tr:nth-child(even) {
     margin: 20px auto;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
-    align-items: start;
+    align-items: stretch;
     padding-bottom: 80px;
 }
 
@@ -114,7 +114,6 @@ tr:nth-child(even) {
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    height: 100%;
 }
 
 .card:hover {
