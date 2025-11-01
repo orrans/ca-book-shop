@@ -119,7 +119,7 @@ tr:nth-child(even) {
 
 .card img {
     width: 100%;
-    height: 180px;
+    height: 200px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 12px;
@@ -145,10 +145,17 @@ tr:nth-child(even) {
     margin-bottom: 0;
 }
 
-.card .btn-read,
-.card .btn-update,
-.card .btn-delete {
-    margin: 10px 5px 0 5px;
+.card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.card button {
+    padding: 6px 10px;
+    margin: 0;
 }
 
 /* search */

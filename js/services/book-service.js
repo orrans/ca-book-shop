@@ -75,7 +75,7 @@ function _createBook(title, price) {
         title,
         price,
         rating: 0,
-        imgUrl: `https://picsum.photos/200/300/?${randImgId}`,
+        imgUrl: `https://picsum.photos/seed/${randImgId}/200/300`,
     }
 }
 

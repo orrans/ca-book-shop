@@ -58,6 +58,7 @@ function renderBooks() {
                 <img src="${book.imgUrl}"/>
                 <h4>$${book.price}</h4>
                 <h4 class="book-rating">${star.repeat(book.rating)}</h4>
+                <div class="card-actions">
                 <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
                         <button class="btn-update" onclick="onUpdateBook('${
                             book.id
@@ -65,6 +66,7 @@ function renderBooks() {
                         <button class="btn-delete" onclick="onRemoveBook('${
                             book.id
                         }')">delete</button>
+                </div>
                 </div>`
         )
         document.querySelector('.grid').innerHTML = strHTMLs.join('')
@@ -160,7 +162,7 @@ function onReadBook(bookId) {
     <h3>${book.title}</h3>
     <h4>$${book.price}</h4>
 
-    <div class="rating">
+        <div class="rating">
         <span class="book-rating">${star.repeat(book.rating)}</span>
         <div class="rating-buttons">
         <button onclick="onUpdateRating('${bookId}',-1)">-</button>
