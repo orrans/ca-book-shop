@@ -102,7 +102,7 @@ This project fulfills all requirements from _Book Shop - Part I_:
 ### 🧑‍💻 Author
 
 Created with ❤️ by **Or-Ran Bachar**  
-[GitHub Profile](https://github.com/)
+[GitHub Profile](https://github.com/orrans)
 
 ---
 
