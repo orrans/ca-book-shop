@@ -18,10 +18,11 @@ function removeBook(bookId) {
 }
 
 function updatePrice(bookId, price) {
-    if (price < 0) return
+    if (price < 0) return false
     const book = gBooks.find((book) => book.id === bookId)
     book.price = price
     _saveToLocalStorage()
+    return true
 }
 
 function getRandomInt(min, max) {

@@ -115,9 +115,25 @@ function onRemoveBook(bookId) {
 }
 
 function onUpdateBook(bookId) {
+    const elModal = document.querySelector('.modal')
+    const elModalContent = document.querySelector('.modal-inner-content')
+
     const newPrice = +prompt('Enter new price')
-    updatePrice(bookId, newPrice)
+    if (newPrice === null || isNaN(newPrice)) return
+
+    const success = updatePrice(bookId, newPrice)
+
+    if (!success) {
+        elModalContent.innerText = 'Price cannot be below 0!'
+        elModal.classList.add('show')
+        setTimeout(() => elModal.classList.remove('show'), 2000)
+        return
+    }
+
     renderBooks()
+    elModalContent.innerText = 'Price updated successfully!'
+    elModal.classList.add('show')
+    setTimeout(() => elModal.classList.remove('show'), 2000)
 }
 
 function onAddbook() {
