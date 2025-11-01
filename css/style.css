@@ -312,6 +312,8 @@ footer span {
 .rating-buttons {
     display: flex;
     gap: 8px;
+    width: 100%;
+    justify-content: center;
 }
 
 .rating .book-rating {
@@ -320,6 +322,8 @@ footer span {
     color: #333;
     min-width: 30px;
     min-height: 30px;
+    width: 100%;
+    text-align: center;
 }
 
 .rating button {
