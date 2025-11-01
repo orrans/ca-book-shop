@@ -7,6 +7,11 @@
         <link rel="stylesheet" href="./css/style.css" />
     </head>
     <body onload="onInit()">
+        <button class="view-state-btn" onclick="toggleView()">
+            Change to
+            <span class="view-state"></span>
+            view
+        </button>
         <div class="search">
             Search:
             <input
@@ -16,16 +21,7 @@
                 oninput="onSearchBook(this.value)" />
             <button class="clear-search" onclick="clearSearch()">Clear</button>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody class="book-list"></tbody>
-        </table>
+        <div class="container"></div>
 
         <button class="btn-add" onclick="onAddbook(event)">Add book</button>
 

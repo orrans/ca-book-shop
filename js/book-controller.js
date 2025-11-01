@@ -1,26 +1,44 @@
 'use strict'
 
 function onInit() {
+    const elViewStateBtn = document.querySelector('.view-state')
     renderBooks()
+    elViewStateBtn.innerText = viewButtonText
+}
+
+let showTable = loadFromStorage('view')
+let viewButtonText = showTable ? 'cards' : 'table'
+const star = '⭐'
+
+function toggleView() {
+    const elViewStateBtn = document.querySelector('.view-state')
+    showTable = !showTable
+    if (showTable) viewButtonText = 'cards'
+    else viewButtonText = 'table'
+    elViewStateBtn.innerText = viewButtonText
+    renderBooks()
+    saveToStorage('view', showTable)
 }
 
 function renderBooks() {
     let books = getBooks()
+    let strHTMLs
     const elTableBody = document.querySelector('.book-list')
-
-    if (!books.length) {
-        elTableBody.innerHTML = `
+    if (showTable) {
+        getTable()
+        if (!books.length) {
+            elTableBody.innerHTML = `
         <tr class="no-books-msg">
             <td colspan="3">No matching books were found...</td>
         </tr>
     `
-        calculateInventory()
-        return
-    }
+            calculateInventory()
+            return
+        }
 
-    var strHTMLs = books.map(
-        (book) =>
-            `<tr>
+        strHTMLs = books.map(
+            (book) =>
+                `<tr>
                     <td>${book.title}</td>
                     <td>${book.price}</td>
                     <td>
@@ -29,10 +47,46 @@ function renderBooks() {
                         <button class="btn-delete" onclick="onRemoveBook('${book.id}')">delete</button>
                     </td>
                 </tr>`
-    )
+        )
 
-    document.querySelector('.book-list').innerHTML = strHTMLs.join('')
+        document.querySelector('.book-list').innerHTML = strHTMLs.join('')
+    } else {
+        getGrid()
+        strHTMLs = books.map(
+            (book) =>
+                (strHTMLs = `<div class="card"> 
+                <h3>${book.title}</h3>
+                <img src="${book.imgUrl}"/>
+                <h4>${book.price}</h4>
+                <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
+                        <button class="btn-update" onclick="onUpdateBook('${book.id}')">update</button>
+                        <button class="btn-delete" onclick="onRemoveBook('${book.id}')">delete</button>
+                </div>`)
+        )
+        document.querySelector('.grid').innerHTML = strHTMLs.join('')
+    }
+
     calculateInventory()
+}
+
+function getTable() {
+    const x = document.querySelector('.container')
+    x.innerHTML = `<table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="book-list"></tbody>
+        </table>`
+}
+
+function getGrid() {
+    const x = document.querySelector('.container')
+    x.innerHTML = `<div class="grid">
+    </div>`
 }
 
 function onRemoveBook(bookId) {
@@ -103,9 +157,11 @@ function onReadBook(bookId) {
     <h4>$${book.price}</h4>
 
     <div class="rating">
+        <span class="book-rating">${star.repeat(book.rating)}</span>
+        <div class="rating-buttons">
         <button onclick="onUpdateRating('${bookId}',-1)">-</button>
-        <span class="book-rating">${book.rating}</span>
         <button onclick="onUpdateRating('${bookId}',1)">+</button>
+        </div>
     </div>
     `
     elModalContent.innerHTML = bookHtml
@@ -119,7 +175,7 @@ function onCloseModal() {
 function onUpdateRating(bookId, amount) {
     const bookRating = updateRating(bookId, amount)
     const elBookRating = document.querySelector('.book-rating')
-    elBookRating.innerText = bookRating
+    elBookRating.innerText = star.repeat(bookRating)
 }
 
 function onSearchBook(searchTxt) {
@@ -131,6 +187,16 @@ function onSearchBook(searchTxt) {
     searchTxt = searchTxt.toLowerCase()
 
     const filteredBooks = getBooks().filter((book) => book.title.toLowerCase().includes(searchTxt))
+
+    if (!filteredBooks.length) {
+        let elTableBody = document.querySelector('.book-list')
+        elTableBody.innerHTML = `
+        <tr class="no-books-msg">
+            <td colspan="3">No matching books were found...</td>
+        </tr>
+        `
+        return
+    }
 
     const strHTMLs = filteredBooks.map(
         (book) => `
