@@ -194,34 +194,68 @@ function onSearchBook(searchTxt) {
         return
     }
 
-    searchTxt = searchTxt.toLowerCase()
+    const filteredBooks = getBooks().filter((book) =>
+        book.title.toLowerCase().includes(searchTxt.toLowerCase())
+    )
 
-    const filteredBooks = getBooks().filter((book) => book.title.toLowerCase().includes(searchTxt))
+    if (showTable) {
+        document.querySelector('.book-list').innerHTML = renderBooksTable(filteredBooks)
+    } else {
+        document.querySelector('.grid').innerHTML = renderBooksGrid(filteredBooks)
+    }
+}
 
-    if (!filteredBooks.length) {
-        let elTableBody = document.querySelector('.book-list')
-        elTableBody.innerHTML = `
+function renderBooksTable(books) {
+    if (!books.length) {
+        return `
         <tr class="no-books-msg">
             <td colspan="3">No matching books were found...</td>
-        </tr>
-        `
-        return
+        </tr>`
     }
 
-    const strHTMLs = filteredBooks.map(
-        (book) => `
-        <tr>
-            <td>${book.title}</td>
-            <td>${book.price}</td>
-            <td>
-                <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
-                <button class="btn-update" onclick="onUpdateBook('${book.id}')">update</button>
-                <button class="btn-delete" onclick="onRemoveBook('${book.id}')">delete</button>
-            </td>
-        </tr>
-    `
-    )
-    document.querySelector('.book-list').innerHTML = strHTMLs.join('')
+    return books
+        .map(
+            (book) => `
+            <tr>
+                <td>${book.title}</td>
+                <td>$${book.price}</td>
+                <td>
+                    <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
+                    <button class="btn-update" onclick="onUpdateBook('${book.id}')">update</button>
+                    <button class="btn-delete" onclick="onRemoveBook('${book.id}')">delete</button>
+                </td>
+            </tr>`
+        )
+        .join('')
+}
+
+function renderBooksGrid(books) {
+    if (!books.length) {
+        return `<p class="empty-grid-msg">No matching books were found...</p>`
+    }
+
+    return books
+        .map(
+            (book) => `
+            <div class="card" onclick="onReadBook('${book.id}')">
+                <h3>${book.title}</h3>
+                <img src="${book.imgUrl}" />
+                <h4>$${book.price}</h4>
+                <h4 class="book-rating">${star.repeat(book.rating)}</h4>
+                <div class="card-actions">
+                    <button class="btn-read" onclick="event.stopPropagation(); onReadBook('${
+                        book.id
+                    }')">read</button>
+                    <button class="btn-update" onclick="event.stopPropagation(); onUpdateBook('${
+                        book.id
+                    }')">update</button>
+                    <button class="btn-delete" onclick="event.stopPropagation(); onRemoveBook('${
+                        book.id
+                    }')">delete</button>
+                </div>
+            </div>`
+        )
+        .join('')
 }
 
 function clearSearch() {

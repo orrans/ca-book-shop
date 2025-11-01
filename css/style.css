@@ -100,6 +100,8 @@ tr:nth-child(even) {
     margin: 20px auto;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 16px;
+    align-items: start;
+    padding-bottom: 80px;
 }
 
 .card {
@@ -162,6 +164,13 @@ tr:nth-child(even) {
 .card button {
     padding: 6px 10px;
     margin: 0;
+}
+
+.grid .empty-grid-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #777;
+    font-style: italic;
 }
 
 /* search */

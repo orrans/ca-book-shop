@@ -18,6 +18,7 @@ function removeBook(bookId) {
 }
 
 function updatePrice(bookId, price) {
+    if (price < 0) return
     const book = gBooks.find((book) => book.id === bookId)
     book.price = price
     _saveToLocalStorage()
