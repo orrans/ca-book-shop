@@ -24,8 +24,20 @@ function renderBooks() {
 }
 
 function onRemoveBook(bookId) {
+    const elModal = document.querySelector('.modal')
+    const elModalContent = document.querySelector('.modal-inner-content')
+    const book = getBook(bookId)
+
+    if (!confirm(`Are you sure you want to remove "${book.title}"?`)) return
+
     removeBook(bookId)
     renderBooks()
+
+    elModal.classList.add('show')
+    elModalContent.innerText = `Book ${book.title} removed successfully!`
+    setTimeout(() => {
+        elModal.classList.remove('show')
+    }, 2000)
 }
 
 function onUpdateBook(bookId) {
@@ -35,10 +47,25 @@ function onUpdateBook(bookId) {
 }
 
 function onAddbook() {
-    const title = prompt('Enter the book title')
-    const price = +prompt('Enter the book price')
+    const elModal = document.querySelector('.modal')
+    const elModalContent = document.querySelector('.modal-inner-content')
+
+    let title = prompt('Enter the book title')
+    while (!title || !title.trim()) {
+        title = prompt('Enter the book title')
+    }
+    let price = +prompt('Enter the book price')
+    while (isNaN(price) || price <= 0) {
+        price = +prompt('Enter the book price')
+    }
+
     addBook(title, price)
     renderBooks()
+    elModal.classList.add('show')
+    elModalContent.innerText = `Book "${title}" added successfully!`
+    setTimeout(() => {
+        elModal.classList.remove('show')
+    }, 2000)
 }
 
 function onReadBook(bookId) {
