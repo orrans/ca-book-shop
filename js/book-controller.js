@@ -40,7 +40,7 @@ function renderBooks() {
             (book) =>
                 `<tr>
                     <td>${book.title}</td>
-                    <td>${book.price}</td>
+                    <td>$${book.price}</td>
                     <td>
                         <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
                         <button class="btn-update" onclick="onUpdateBook('${book.id}')">update</button>
@@ -53,15 +53,19 @@ function renderBooks() {
     } else {
         getGrid()
         strHTMLs = books.map(
-            (book) =>
-                (strHTMLs = `<div class="card"> 
+            (book) => `<div class="card" onclick="onReadBook('${book.id}')"> 
                 <h3>${book.title}</h3>
                 <img src="${book.imgUrl}"/>
-                <h4>${book.price}</h4>
+                <h4>$${book.price}</h4>
+                <h4 class="book-rating">${star.repeat(book.rating)}</h4>
                 <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
-                        <button class="btn-update" onclick="onUpdateBook('${book.id}')">update</button>
-                        <button class="btn-delete" onclick="onRemoveBook('${book.id}')">delete</button>
-                </div>`)
+                        <button class="btn-update" onclick="onUpdateBook('${
+                            book.id
+                        }')">update</button>
+                        <button class="btn-delete" onclick="onRemoveBook('${
+                            book.id
+                        }')">delete</button>
+                </div>`
         )
         document.querySelector('.grid').innerHTML = strHTMLs.join('')
     }
@@ -174,8 +178,10 @@ function onCloseModal() {
 
 function onUpdateRating(bookId, amount) {
     const bookRating = updateRating(bookId, amount)
-    const elBookRating = document.querySelector('.book-rating')
+    const elModal = document.querySelector('.modal')
+    const elBookRating = elModal.querySelector('.book-rating')
     elBookRating.innerText = star.repeat(bookRating)
+    renderBooks()
 }
 
 function onSearchBook(searchTxt) {
