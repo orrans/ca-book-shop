@@ -3,8 +3,33 @@ const storageKey = 'booksDB'
 
 _createBooks()
 
-function getBooks() {
-    return gBooks
+function getBooks(options = {}) {
+    const filterBy = options.filterBy || { txt: '', minPrice: 0 }
+    const sortBy = options.sortBy || {}
+    const page = options.page || { idx: 0, size: 5 }
+
+    let books = gBooks
+    books = _filterBooks(books, filterBy)
+
+    if (sortBy.title) {
+        const dir = Number(sortBy.title)
+        books = books.toSorted((a, b) => a.title.localeCompare(b.title) * dir)
+    } else if (sortBy.price) {
+        const dir = Number(sortBy.price)
+        books = books.toSorted((a, b) => (a.price - b.price) * dir)
+    }
+
+    const startIdx = page.idx * page.size
+    const endIdx = startIdx + page.size
+    return books.slice(startIdx, endIdx)
+}
+
+function getPageCount(options) {
+    const page = options.page
+    const filterBy = options.filterBy
+
+    var booksLength = _filterBooks(gBooks, filterBy).length
+    return Math.ceil(booksLength / page.size)
 }
 
 function getBook(bookId) {
@@ -77,6 +102,18 @@ function calculateInventory() {
     elCheapBooks.innerText = cheapBooks
     elAverageBooks.innerText = averageBooks
     elExpensiveBooks.innerText = expensiveBooks
+}
+
+function _filterBooks(books, filterBy = { txt: '', minPrice: 0 }) {
+    if (filterBy.txt) {
+        books = books.filter((book) =>
+            book.title.toLowerCase().includes(filterBy.txt.toLowerCase())
+        )
+    }
+    if (filterBy.minPrice) {
+        books = books.filter((book) => book.price >= filterBy.minPrice)
+    }
+    return books
 }
 
 function _createBook(title, price) {
