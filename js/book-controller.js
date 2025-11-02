@@ -40,6 +40,7 @@ function renderBooks() {
     }
 
     calculateInventory()
+    renderPagination()
 }
 
 function renderBooksTableContent(books) {
@@ -440,4 +441,49 @@ function setQueryParams() {
         queryParams.toString()
 
     window.history.pushState({ path: newUrl }, '', newUrl)
+}
+
+function renderPagination() {
+    const pageCount = getPageCount(gQueryOptions)
+    const currPage = gQueryOptions.page.idx
+    const elPages = document.querySelector('.pages')
+
+    if (pageCount <= 1) {
+        elPages.innerHTML = ''
+        return
+    }
+    const maxButtons = 5
+    let start = Math.max(0, currPage - 2)
+    let end = Math.min(pageCount, start + maxButtons)
+    if (end - start < maxButtons) start = Math.max(0, end - maxButtons)
+
+    let html = ''
+    for (let i = start; i < end; i++) {
+        const isActive = i === currPage ? 'active' : ''
+        html += `<button class="page-btn ${isActive}" onclick="onGoToPage(${i})">${i + 1}</button>`
+    }
+    elPages.innerHTML = html
+}
+
+function onGoToPage(pageIdx) {
+    gQueryOptions.page.idx = pageIdx
+    setQueryParams()
+    renderBooks()
+}
+
+function onPrevPage() {
+    if (gQueryOptions.page.idx > 0) {
+        gQueryOptions.page.idx--
+        setQueryParams()
+        renderBooks()
+    }
+}
+
+function onNextPage() {
+    const pageCount = getPageCount(gQueryOptions)
+    if (gQueryOptions.page.idx < pageCount - 1) {
+        gQueryOptions.page.idx++
+        setQueryParams()
+        renderBooks()
+    }
 }
