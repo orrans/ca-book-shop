@@ -139,33 +139,55 @@ function onAddbook() {
     const elModal = document.querySelector('.modal')
     const elModalContent = document.querySelector('.modal-inner-content')
 
-    let title = prompt('Enter the book title')
-    if (title === null) return
-    while (!title || !title.trim()) {
-        title = prompt('Title cannot be empty!\nEnter the book title')
-        if (title === null) return
-    }
+    elModalContent.innerHTML = `
+        <h3>Add a New Book</h3>
+        <div class="add-book-form">
+            <label for="new-book-title">Book title:</label>
+            <input type="text" class="new-book-title" placeholder="Enter book title" />
 
-    const bookExists = isBookExists(title)
-    let price
+            <label for="new-book-price">Book price:</label>
+            <input type="number" class="new-book-price" placeholder="Enter book price" min="1" />
 
-    if (bookExists) {
-        elModalContent.innerText = `Book "${title}" already exists!`
-    } else {
-        price = +prompt('Enter the book price')
-        if (price === null) return
-        while (isNaN(price) || price <= 0) {
-            price = +prompt('Please enter valid book price!\nEnter the book price')
-            if (price === null) return
-        }
-
-        addBook(title, price)
-        renderBooks()
-        elModalContent.innerText = `Book "${title}" added successfully!`
-    }
-
+            <div class="modal-buttons">
+                <button class="btn-add" onclick="onConfirmAddBook()">Add</button>
+                <button class="btn-delete" onclick="onCloseModal()">Cancel</button>
+            </div>
+        </div>
+    `
     elModal.classList.add('show')
-    setTimeout(() => elModal.classList.remove('show'), 2000)
+}
+
+function onConfirmAddBook() {
+    const elTitle = document.querySelector('.new-book-title')
+    const elPrice = document.querySelector('.new-book-price')
+    const elModal = document.querySelector('.modal')
+    const elModalContent = document.querySelector('.modal-inner-content')
+
+    const title = elTitle.value.trim()
+    const price = +elPrice.value
+
+    if (!title) {
+        elModalContent.querySelector('h3').innerText = 'Title cannot be empty!'
+        return
+    }
+
+    if (isBookExists(title)) {
+        elModalContent.querySelector('h3').innerText = `Book "${title}" already exists!`
+        return
+    }
+
+    if (!price || isNaN(price) || price <= 0) {
+        elModalContent.querySelector('h3').innerText = 'Please enter a valid price!'
+        return
+    }
+
+    addBook(title, price)
+    renderBooks()
+
+    elModalContent.innerHTML = `
+        <h3>Book "${title}" added successfully!</h3>
+    `
+    setTimeout(() => elModal.classList.remove('show'), 1500)
 }
 
 function onReadBook(bookId) {
