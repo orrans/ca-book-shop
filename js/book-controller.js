@@ -1,64 +1,85 @@
 'use strict'
 
+let gIsTable = loadFromStorage('view')
+let gViewButtonText = gIsTable ? 'cards' : 'table'
+const gStar = '⭐'
+
 function onInit() {
     const elViewStateBtn = document.querySelector('.view-state')
     renderBooks()
-    elViewStateBtn.innerText = viewButtonText
+    elViewStateBtn.innerText = gViewButtonText
 }
-
-let showTable = loadFromStorage('view')
-let viewButtonText = showTable ? 'cards' : 'table'
-const star = '⭐'
 
 function toggleView() {
     const elViewStateBtn = document.querySelector('.view-state')
-    showTable = !showTable
-    if (showTable) viewButtonText = 'cards'
-    else viewButtonText = 'table'
-    elViewStateBtn.innerText = viewButtonText
+    gIsTable = !gIsTable
+    gViewButtonText = gIsTable ? 'cards' : 'table'
+    elViewStateBtn.innerText = gViewButtonText
     renderBooks()
-    saveToStorage('view', showTable)
+    saveToStorage('view', gIsTable)
 }
 
 function renderBooks() {
-    let books = getBooks()
-    let strHTMLs
-    const elTableBody = document.querySelector('.book-list')
-    if (showTable) {
-        getTable()
-        if (!books.length) {
-            elTableBody.innerHTML = `
-        <tr class="no-books-msg">
-            <td colspan="3">No matching books were found...</td>
-        </tr>
-    `
-            calculateInventory()
-            return
-        }
+    const books = getBooks()
+    const elTableContainer = document.querySelector('.container-table')
+    const elGridContainer = document.querySelector('.container-grid')
 
-        strHTMLs = books.map(
-            (book) =>
-                `<tr>
-                    <td>${book.title}</td>
-                    <td>$${book.price}</td>
-                    <td>
-                        <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
-                        <button class="btn-update" onclick="onUpdateBook('${book.id}')">update</button>
-                        <button class="btn-delete" onclick="onRemoveBook('${book.id}')">delete</button>
-                    </td>
-                </tr>`
-        )
-
-        document.querySelector('.book-list').innerHTML = strHTMLs.join('')
+    if (gIsTable) {
+        elTableContainer.classList.remove('hidden')
+        elGridContainer.classList.add('hidden')
+        renderBooksTableContent(books)
     } else {
-        getGrid()
-        strHTMLs = books.map(
-            (book) => `<div class="card" onclick="onReadBook('${book.id}')"> 
-                <h3>${book.title}</h3>
-                <img src="${book.imgUrl}"/>
-                <h4>$${book.price}</h4>
-                <h4 class="book-rating">${star.repeat(book.rating)}</h4>
-                <div class="card-actions">
+        elGridContainer.classList.remove('hidden')
+        elTableContainer.classList.add('hidden')
+        renderBooksGridContent(books)
+    }
+
+    calculateInventory()
+}
+
+function renderBooksTableContent(books) {
+    const elTableBody = document.querySelector('.book-list')
+
+    if (!books.length) {
+        elTableBody.innerHTML = `
+            <tr class="no-books-msg">
+                <td colspan="4">No matching books were found...</td>
+            </tr>`
+        return
+    }
+
+    const strHTMLs = books.map(
+        (book) => `
+        <tr>
+            <td>${book.title}</td>
+            <td>$${book.price}</td>
+            <td class="table-rating">${gStar.repeat(book.rating)}</td>
+            <td>
+                <button class="btn-read" onclick="onReadBook('${book.id}')">read</button>
+                <button class="btn-update" onclick="onUpdateBook('${book.id}')">update</button>
+                <button class="btn-delete" onclick="onRemoveBook('${book.id}')">delete</button>
+            </td>
+        </tr>`
+    )
+
+    elTableBody.innerHTML = strHTMLs.join('')
+}
+
+function renderBooksGridContent(books) {
+    const elGrid = document.querySelector('.container-grid .grid')
+    if (!books.length) {
+        elGrid.innerHTML = `<p class="empty-grid-msg">No matching books were found...</p>`
+        return
+    }
+
+    const strHTMLs = books.map(
+        (book) => `
+        <div class="card" onclick="onReadBook('${book.id}')">
+            <h3>${book.title}</h3>
+            <img src="${book.imgUrl}" />
+            <h4>$${book.price}</h4>
+            <h4 class="book-rating">${gStar.repeat(book.rating)}</h4>
+            <div class="card-actions">
                 <button class="btn-read" onclick="event.stopPropagation(); onReadBook('${
                     book.id
                 }')">read</button>
@@ -68,33 +89,11 @@ function renderBooks() {
                 <button class="btn-delete" onclick="event.stopPropagation(); onRemoveBook('${
                     book.id
                 }')">delete</button>
-                </div>
-                </div>`
-        )
-        document.querySelector('.grid').innerHTML = strHTMLs.join('')
-    }
+            </div>
+        </div>`
+    )
 
-    calculateInventory()
-}
-
-function getTable() {
-    const x = document.querySelector('.container')
-    x.innerHTML = `<table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Price</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody class="book-list"></tbody>
-        </table>`
-}
-
-function getGrid() {
-    const x = document.querySelector('.container')
-    x.innerHTML = `<div class="grid">
-    </div>`
+    elGrid.innerHTML = strHTMLs.join('')
 }
 
 function onRemoveBook(bookId) {
@@ -181,7 +180,7 @@ function onReadBook(bookId) {
     <h4>$${book.price}</h4>
 
         <div class="rating">
-        <span class="book-rating">${star.repeat(book.rating)}</span>
+        <span class="book-rating">${gStar.repeat(book.rating)}</span>
         <div class="rating-buttons">
         <button onclick="onUpdateRating('${bookId}',-1)">-</button>
         <button onclick="onUpdateRating('${bookId}',1)">+</button>
@@ -200,7 +199,7 @@ function onUpdateRating(bookId, amount) {
     const bookRating = updateRating(bookId, amount)
     const elModal = document.querySelector('.modal')
     const elBookRating = elModal.querySelector('.book-rating')
-    elBookRating.innerText = star.repeat(bookRating)
+    elBookRating.innerText = gStar.repeat(bookRating)
     renderBooks()
 }
 
@@ -214,7 +213,7 @@ function onSearchBook(searchTxt) {
         book.title.toLowerCase().includes(searchTxt.toLowerCase())
     )
 
-    if (showTable) {
+    if (gIsTable) {
         document.querySelector('.book-list').innerHTML = renderBooksTable(filteredBooks)
     } else {
         document.querySelector('.grid').innerHTML = renderBooksGrid(filteredBooks)
@@ -222,10 +221,11 @@ function onSearchBook(searchTxt) {
 }
 
 function renderBooksTable(books) {
+    console.log(books.length)
     if (!books.length) {
         return `
         <tr class="no-books-msg">
-            <td colspan="3">No matching books were found...</td>
+            <td colspan="4">No matching books were found...</td>
         </tr>`
     }
 
@@ -257,7 +257,7 @@ function renderBooksGrid(books) {
                 <h3>${book.title}</h3>
                 <img src="${book.imgUrl}" />
                 <h4>$${book.price}</h4>
-                <h4 class="book-rating">${star.repeat(book.rating)}</h4>
+                <h4 class="book-rating">${gStar.repeat(book.rating)}</h4>
                 <div class="card-actions">
                     <button class="btn-read" onclick="event.stopPropagation(); onReadBook('${
                         book.id

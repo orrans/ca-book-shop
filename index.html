@@ -23,7 +23,23 @@
         </div>
         <button class="btn-add" onclick="onAddbook(event)">Add book</button>
 
-        <div class="container"></div>
+        <div class="container-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Rating</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody class="book-list"></tbody>
+            </table>
+        </div>
+
+        <div class="container-grid hidden">
+            <div class="grid"></div>
+        </div>
 
         <div class="modal" onclick="onCloseModal()">
             <div class="modal-content" onclick="event.stopPropagation()">

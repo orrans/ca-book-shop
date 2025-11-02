@@ -9,10 +9,15 @@ body {
     justify-content: flex-start;
 }
 
-.container {
+.container-grid,
+.container-table {
     width: 100%;
     display: flex;
     justify-content: center;
+}
+
+.hidden {
+    display: none;
 }
 
 /* buttons */
@@ -86,6 +91,10 @@ th:last-child {
 
 tr:nth-child(even) {
     background-color: #f4f3f3;
+}
+
+td.table-rating {
+    min-width: 115px;
 }
 
 .no-books-msg td {
