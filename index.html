@@ -21,6 +21,43 @@
                 oninput="onSearchBook(this.value)" />
             <button class="clear-search" onclick="clearSearch()">Clear</button>
         </div>
+
+        <section class="book-filter">
+            <fieldset>
+                <legend>Filter & Sorting</legend>
+
+                <div class="filter-by">
+                    <input
+                        oninput="onSetFilterBy({ txt: this.value })"
+                        placeholder="Title"
+                        type="text" />
+                    <label>
+                        <span>Min price:</span>
+                        <input
+                            type="range"
+                            min="0"
+                            max="1000"
+                            value="0"
+                            oninput="this.nextElementSibling.value = this.value"
+                            onchange="onSetFilterBy({ minPrice: +this.value })" />
+                        <output>0</output>
+                    </label>
+                </div>
+
+                <div class="sort-by">
+                    <select onchange="onSetSortBy()">
+                        <option value="">Select Sorting</option>
+                        <option value="vendor">By Title</option>
+                        <option value="maxPrice">By price</option>
+                    </select>
+                    <label>
+                        <span>Descending</span>
+                        <input class="sort-desc" type="checkbox" oninput="onSetSortBy()" />
+                    </label>
+                </div>
+            </fieldset>
+        </section>
+
         <button class="btn-add" onclick="onAddbook(event)">Add book</button>
 
         <div class="container-table">
