@@ -113,43 +113,53 @@ function onRemoveBook(bookId) {
     }, 2000)
 }
 
-function onUpdateBook(bookId) {
+function openBookModal(mode, bookId = null) {
     const elModal = document.querySelector('.modal')
     const elModalContent = document.querySelector('.modal-inner-content')
 
-    const newPrice = +prompt('Enter new price')
-    if (newPrice === null || isNaN(newPrice)) return
+    let titleText = ''
+    let priceValue = ''
+    let imgUrl = ''
+    let book = null
 
-    const success = updatePrice(bookId, newPrice)
-
-    if (!success) {
-        elModalContent.innerText = 'Price cannot be below 0!'
-        elModal.classList.add('show')
-        setTimeout(() => elModal.classList.remove('show'), 2000)
-        return
+    if (mode === 'edit') {
+        book = getBook(bookId)
+        imgUrl = book.imgUrl
+        titleText = book.title
+        priceValue = book.price
     }
 
-    renderBooks()
-    elModalContent.innerText = 'Price updated successfully!'
-    elModal.classList.add('show')
-    setTimeout(() => elModal.classList.remove('show'), 2000)
-}
-
-function onAddbook() {
-    const elModal = document.querySelector('.modal')
-    const elModalContent = document.querySelector('.modal-inner-content')
+    const heading = mode === 'add' ? 'Add new book' : 'Edit book'
+    const actionLabel = mode === 'add' ? 'Add' : 'Save'
 
     elModalContent.innerHTML = `
-        <h3>Add a New Book</h3>
+        <h3>${heading}</h3>
         <div class="add-book-form">
-            <label for="new-book-title">Book title:</label>
-            <input type="text" class="new-book-title" placeholder="Enter book title" />
-
-            <label for="new-book-price">Book price:</label>
-            <input type="number" class="new-book-price" placeholder="Enter book price" min="1" />
-
+        ${
+            mode === 'edit'
+                ? `
+                <div class="edit-book-img">
+                    <img src="${imgUrl}" alt="${titleText}" />
+                </div>
+            `
+                : ''
+        }
+            <div class="add-book-row">
+                <label for="book-title">Book title:</label>
+                <input type="text" id="book-title" placeholder="Enter book title" value="${
+                    mode === 'edit' ? titleText : ''
+                }" />
+            </div>
+            <div class="add-book-row">
+                <label for="book-price">Book price:</label>
+                <input type="number" id="book-price" placeholder="Enter book price" min="1" value="${
+                    mode === 'edit' ? priceValue : ''
+                }" />
+            </div>
             <div class="modal-buttons">
-                <button class="btn-add" onclick="onConfirmAddBook()">Add</button>
+                <button class="btn-add" onclick="onConfirmBook('${mode}'${
+        bookId ? `, '${bookId}'` : ''
+    })">${actionLabel}</button>
                 <button class="btn-delete" onclick="onCloseModal()">Cancel</button>
             </div>
         </div>
@@ -157,36 +167,58 @@ function onAddbook() {
     elModal.classList.add('show')
 }
 
-function onConfirmAddBook() {
-    const elTitle = document.querySelector('.new-book-title')
-    const elPrice = document.querySelector('.new-book-price')
+function onUpdateBook(bookId) {
+    openBookModal('edit', bookId)
+}
+
+function onAddbook() {
+    openBookModal('add')
+}
+
+function onConfirmBook(mode, bookId = null) {
+    const elTitle = document.querySelector('#book-title')
+    const elPrice = document.querySelector('#book-price')
     const elModal = document.querySelector('.modal')
     const elModalContent = document.querySelector('.modal-inner-content')
 
-    const title = elTitle.value.trim()
-    const price = +elPrice.value
+    const titleInput = elTitle.value.trim()
+    const priceInput = elPrice.value.trim()
 
-    if (!title) {
-        elModalContent.querySelector('h3').innerText = 'Title cannot be empty!'
+    if (mode === 'add') {
+        if (!titleInput) {
+            elModalContent.querySelector('h3').innerText = 'Title cannot be empty!'
+            return
+        }
+        if (isBookExists(titleInput)) {
+            elModalContent.querySelector('h3').innerText = `Book "${titleInput}" already exists!`
+            return
+        }
+        const price = +priceInput
+        if (!price || isNaN(price) || price <= 0) {
+            elModalContent.querySelector('h3').innerText = 'Please enter a valid price!'
+            return
+        }
+
+        addBook(titleInput, price)
+        renderBooks()
+        elModalContent.innerHTML = `<h3>Book "${titleInput}" added successfully!</h3>`
+        setTimeout(() => elModal.classList.remove('show'), 1500)
         return
     }
 
-    if (isBookExists(title)) {
-        elModalContent.querySelector('h3').innerText = `Book "${title}" already exists!`
-        return
-    }
+    const book = getBook(bookId)
+    const newTitle = titleInput || book.title
+    const newPrice = priceInput ? +priceInput : book.price
 
-    if (!price || isNaN(price) || price <= 0) {
+    if (newPrice <= 0 || isNaN(newPrice)) {
         elModalContent.querySelector('h3').innerText = 'Please enter a valid price!'
         return
     }
 
-    addBook(title, price)
+    updateBook(bookId, newTitle, newPrice)
     renderBooks()
 
-    elModalContent.innerHTML = `
-        <h3>Book "${title}" added successfully!</h3>
-    `
+    elModalContent.innerHTML = `<h3>Book "${newTitle}" updated successfully!</h3>`
     setTimeout(() => elModal.classList.remove('show'), 1500)
 }
 

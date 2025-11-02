@@ -39,6 +39,15 @@ function addBook(title, price) {
     _saveToLocalStorage()
 }
 
+function updateBook(bookId, newTitle, newPrice) {
+    const book = gBooks.find((book) => book.id === bookId)
+    if (!book) return false
+    book.title = newTitle
+    book.price = newPrice
+    saveToStorage(storageKey, gBooks)
+    return true
+}
+
 function updateRating(bookId, amount) {
     const bookIdx = gBooks.findIndex((book) => book.id === bookId)
     gBooks[bookIdx].rating += amount
